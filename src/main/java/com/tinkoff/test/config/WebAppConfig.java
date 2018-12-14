@@ -12,8 +12,6 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.view.JstlView;
-import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -26,15 +24,6 @@ import javax.sql.DataSource;
 
 public class WebAppConfig {
 
-    @Bean
-    public UrlBasedViewResolver setupViewResolver() {
-        UrlBasedViewResolver resolver = new UrlBasedViewResolver();
-        resolver.setPrefix("/pages/");
-        resolver.setSuffix(".jsp");
-        resolver.setViewClass(JstlView.class);
-
-        return resolver;
-    }
     @Bean
     public DataSource dataSource() {
         return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2).build();

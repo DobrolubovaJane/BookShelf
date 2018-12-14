@@ -2,32 +2,28 @@ package com.tinkoff.test.controller;
 
 import com.tinkoff.test.entity.Book;
 import com.tinkoff.test.service.impl.BookServiceImpl;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
-@RequestMapping("/")
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/books")
 public class MainController {
+    private static final Logger LOG = Logger.getLogger(MainController.class);
     @Autowired
     private BookServiceImpl bookService;
 
-    @GetMapping("/")
-    public String index() {
-        bookService.addBook(new Book("name1","author1"));
-        return "index";
-
+    @GetMapping()
+    public List<Book> getAllBooks() {
+        return bookService.getAllBooks();
     }
 
-    @GetMapping("/books")
-    public String getAllBooks(Model model) {
-        System.out.println("getAllBooks " + bookService);
-        model.addAttribute("books", bookService.getAllBooks());
-        return "books";
-
+    @PostMapping()
+    public Book addBook(@RequestBody Book book) {
+        bookService.addBook(book);
+        return book;
     }
 }
+

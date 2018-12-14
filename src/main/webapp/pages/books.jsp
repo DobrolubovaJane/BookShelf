@@ -18,14 +18,15 @@
  </thead>
        <c:forEach items="${books}" var="book">
        <tr>
-            <td>1.${book.name}</td>
-            <td>2.${book.author}</td>
+            <td>${book.name}</td>
+            <td>${book.author}</td>
     <%--     <td><a href="mailto:${user.email}">${user.email}</a></td>--%>
     <%--     <td><fmt:formatDate value="${user.birthDate}" pattern="dd-MM-yyyy"/></td>--%>
     <%--     <td>${user.active ? "Активен" : "Деактивирован"}</td>--%>
-    <%--     <td><a href="<c:url value="/editUser.html?id=${user.id}"/>">Редактировать</a></td>--%>
+        <td><a href="<c:url value="editUser?id=${user.id}"/>">Редактировать</a></td>--%>
        </tr>
        </c:forEach>
      </table>
+<p><a href="/addBook">Добавить книгу</a></p>
 </body>
 </html>
