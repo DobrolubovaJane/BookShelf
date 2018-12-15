@@ -1,12 +1,12 @@
 
 # Get list
-GET http://localhost:8080/api/books
+GET http://localhost:8080/books
 Content-Type: application/json
 
 ###
 
 # Add book
-POST http://localhost:8080/api/books
+POST http://localhost:8080/books
 Content-Type: application/json
 
 {

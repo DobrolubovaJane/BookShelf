@@ -5,22 +5,21 @@ info:
   version: "1.0.0"
   title: ""
 tags:
-  - name: books
-    description: books api
-    externalDocs:
-      url: 'http://swagger.io'
-  - name: readers
-    description: readers api
-    externalDocs:
-      url: 'http://swagger.io'
-basePath: /api
+- name: books
+  description: books api
+  externalDocs:
+    url: 'http://swagger.io'
+- name: readers
+  description: readers api
+  externalDocs:
+    url: 'http://swagger.io'
 schemes:
 - http
 paths:
   '/books':
     post:
       tags:
-        - books
+      - books
       summary: Adding new book to shelf
       operationId: addBook
       consumes:
@@ -36,20 +35,111 @@ paths:
       responses:
         200:
           description: Ok
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorModel'
     get:
       tags:
-        - books
+      - books
       summary: Get books from shelf
       operationId: getAll
       consumes:
       - application/json
       produces:
       - application/json
+      parameters:
+      - in: query
+        name: searchQuery
+        type: string
+        description: 'Searching by book name'
       responses:
         200:
           description: "List of books"
           schema:
             $ref: '#/definitions/BooksListModel'
+  '/books/{id}':
+    get:
+      tags:
+      - books
+      summary: Get book by id
+      operationId: getById
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: id
+        type: string
+        format: guid
+        required: true
+      responses:
+        200:
+          description: "Returns book with specified id"
+          schema:
+            $ref: '#/definitions/BookModel'
+        404:
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorModel'
+    put:
+      tags:
+      - books
+      summary: Update book with id
+      operationId: UpdateBook
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: id
+        type: string
+        format: guid
+        required: true
+      - in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/UpdateBookRequest'
+      responses:
+        200:
+          description: "List of books"
+          schema:
+            $ref: '#/definitions/BookModel'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        404:
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorModel'
+    delete:
+      tags:
+      - books
+      summary: Delete book with id
+      operationId: DeleteBook
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: id
+        type: string
+        format: guid
+        required: true
+      responses:
+        200:
+          description: "List of books"
+          schema:
+            $ref: '#/definitions/BookModel'
+        404:
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorModel'
   '/readers':
     post:
       tags:
@@ -80,6 +170,9 @@ definitions:
         type: string
       author:
         type: string
+  UpdateBookRequest:
+    allOf:
+    - $ref: '#/definitions/AddReaderRequest'
   AddReaderRequest:
     type: object
     required:
@@ -93,6 +186,9 @@ definitions:
   BookModel:
     type: object
     properties:
+      id:
+        type: string
+        format: guid
       name:
         type: string
       author:
@@ -108,3 +204,8 @@ definitions:
           $ref: '#/definitions/BookModel'
       total:
         type: integer
+  ErrorModel:
+    type: object
+    properties:
+      message:
+        type: string
