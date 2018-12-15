@@ -7,12 +7,8 @@ info:
 tags:
 - name: books
   description: books api
-  externalDocs:
-    url: 'http://swagger.io'
 - name: readers
   description: readers api
-  externalDocs:
-    url: 'http://swagger.io'
 schemes:
 - http
 paths:
@@ -35,6 +31,8 @@ paths:
       responses:
         200:
           description: Ok
+          schema:
+            $ref: '#/definitions/BookModel'
         400:
           description: Bad Request
           schema:
@@ -105,7 +103,7 @@ paths:
           $ref: '#/definitions/UpdateBookRequest'
       responses:
         200:
-          description: "List of books"
+          description: "Ok"
           schema:
             $ref: '#/definitions/BookModel'
         400:
@@ -136,6 +134,74 @@ paths:
           description: "List of books"
           schema:
             $ref: '#/definitions/BookModel'
+        404:
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorModel'
+  '/books/{id}/getBy/{readerId}':
+    post:
+      tags:
+      - books
+      summary: Getting book by reader
+      operationId: getBookByReader
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: id
+        type: string
+        format: guid
+        required: true
+        description: book ID
+      - in: path
+        name: readerId
+        type: string
+        format: guid
+        required: true
+        description: reader ID
+      responses:
+        200:
+          description: Ok
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        404:
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorModel'
+  '/books/{id}/returnBy/{readerId}':
+    post:
+      tags:
+      - books
+      summary: Returning book by reader
+      operationId: returnBookByReader
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: id
+        type: string
+        format: guid
+        required: true
+        description: book ID
+      - in: path
+        name: readerId
+        type: string
+        format: guid
+        required: true
+        description: reader ID
+      responses:
+        200:
+          description: Ok
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorModel'
         404:
           description: Not Found
           schema:
