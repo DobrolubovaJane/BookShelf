@@ -1,0 +1,110 @@
+---
+swagger: "2.0"
+info:
+  description: "Book shelf"
+  version: "1.0.0"
+  title: ""
+tags:
+  - name: books
+    description: books api
+    externalDocs:
+      url: 'http://swagger.io'
+  - name: readers
+    description: readers api
+    externalDocs:
+      url: 'http://swagger.io'
+basePath: /api
+schemes:
+- http
+paths:
+  '/books':
+    post:
+      tags:
+        - books
+      summary: Adding new book to shelf
+      operationId: addBook
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/AddBookRequest'
+      responses:
+        200:
+          description: Ok
+    get:
+      tags:
+        - books
+      summary: Get books from shelf
+      operationId: getAll
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        200:
+          description: "List of books"
+          schema:
+            $ref: '#/definitions/BooksListModel'
+  '/readers':
+    post:
+      tags:
+      - readers
+      summary: Adding new reader
+      operationId: addReader
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/AddReaderRequest'
+      responses:
+        200:
+          description: Ok
+definitions:
+  AddBookRequest:
+    type: object
+    required:
+    - name
+    - author
+    properties:
+      name:
+        type: string
+      author:
+        type: string
+  AddReaderRequest:
+    type: object
+    required:
+    - name
+    - surname
+    properties:
+      name:
+        type: string
+      surname:
+        type: string
+  BookModel:
+    type: object
+    properties:
+      name:
+        type: string
+      author:
+        type: string
+      description:
+        type: string
+  BooksListModel:
+    type: object
+    properties:
+      items:
+        type: array
+        items:
+          $ref: '#/definitions/BookModel'
+      total:
+        type: integer

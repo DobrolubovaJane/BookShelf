@@ -10,8 +10,39 @@ POST http://localhost:8080/api/books
 Content-Type: application/json
 
 {
-  "name": "book 2",
-  "author": "Gogol"
+  "name": "book 3",
+  "author": "Gogol 3"
+}
+###
+
+# Get list
+GET http://localhost:8080/api/readers
+Content-Type: application/json
+
+###
+# Add reader
+POST http://localhost:8080/api/readers
+Content-Type: application/json
+
+{
+  "name": "reader 2"
+}
+
+###
+
+#Add Delivery
+GET http://localhost:8080/api/delivery
+Content-Type: application/json
+
+###
+
+## Start Read
+POST http://localhost:8080/api/delivery/startRead
+Content-Type: application/json
+
+{
+  "reader": "5",
+  "book": "2"
 }
 
 ###

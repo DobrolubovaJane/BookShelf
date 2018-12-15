@@ -10,8 +10,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/books")
-public class MainController {
-    private static final Logger LOG = Logger.getLogger(MainController.class);
+public class BookController {
+    private static final Logger LOG = Logger.getLogger(BookController.class);
     @Autowired
     private BookServiceImpl bookService;
 

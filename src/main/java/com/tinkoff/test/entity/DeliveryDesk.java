@@ -32,6 +32,12 @@ public class DeliveryDesk {
         this.endDate = endDate;
     }
 
+    public DeliveryDesk(Book book, Reader reader, Date startDate) {
+        this.book = book;
+        this.reader = reader;
+        this.startDate = startDate;
+    }
+
 
     public Integer getId() {
         return id;

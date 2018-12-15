@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -25,6 +26,12 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
+    public Optional<Book> getBookById(Integer id) {
+        return bookRepository.findById(id);
+    }
+
+    @Override
+    @Transactional
     public Book getBookByName(String name) {
         return bookRepository.findByBookName(name);
     }
@@ -32,15 +39,14 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public void addBook(Book book) {
-        System.out.println("addBook");
         LOG.debug("addBook " + book.toString());
         bookRepository.saveAndFlush(book);
     }
 
     @Override
     @Transactional
-    public void deleteBook(Integer id) {
-
+    public void deleteBook(Book book) {
+        bookRepository.delete(book);
     }
 
     @Override
