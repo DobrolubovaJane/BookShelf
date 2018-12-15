@@ -70,7 +70,7 @@ paths:
       - in: path
         name: id
         type: string
-        format: guid
+        format: uuid
         required: true
       responses:
         200:
@@ -94,7 +94,7 @@ paths:
       - in: path
         name: id
         type: string
-        format: guid
+        format: uuid
         required: true
       - in: body
         name: request
@@ -127,7 +127,7 @@ paths:
       - in: path
         name: id
         type: string
-        format: guid
+        format: uuid
         required: true
       responses:
         200:
@@ -152,13 +152,13 @@ paths:
       - in: path
         name: id
         type: string
-        format: guid
+        format: uuid
         required: true
         description: book ID
       - in: path
         name: readerId
         type: string
-        format: guid
+        format: uuid
         required: true
         description: reader ID
       responses:
@@ -186,13 +186,13 @@ paths:
       - in: path
         name: id
         type: string
-        format: guid
+        format: uuid
         required: true
         description: book ID
       - in: path
         name: readerId
         type: string
-        format: guid
+        format: uuid
         required: true
         description: reader ID
       responses:
@@ -202,6 +202,56 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/ErrorModel'
+        404:
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorModel'
+  'books/{id}/popularity':
+    get:
+      tags:
+      - books
+      summary: Get book popularity
+      operationId: getPopularity
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: id
+        type: string
+        format: uuid
+        required: true
+        description: book ID
+      responses:
+        200:
+          schema:
+            $ref: '#/definitions/BooksPopularityModel'
+        404:
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorModel'
+  'books/{id}/averagetime':
+    get:
+      tags:
+      - books
+      summary: Get book's reading average time
+      operationId: getAverageTimeOfReading
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: id
+        type: string
+        format: uuid
+        required: true
+        description: book ID
+      responses:
+        200:
+          schema:
+            $ref: '#/definitions/AverageTimeModel'
         404:
           description: Not Found
           schema:
@@ -254,7 +304,7 @@ definitions:
     properties:
       id:
         type: string
-        format: guid
+        format: uuid
       name:
         type: string
       author:
@@ -269,6 +319,20 @@ definitions:
         items:
           $ref: '#/definitions/BookModel'
       total:
+        type: integer
+  BooksPopularityModel:
+    type: object
+    properties:
+      readersCount:
+        type: integer
+  AverageTimeModel:
+    type: object
+    properties:
+      daysCount:
+        type: integer
+      hoursCount:
+        type: integer
+      minutesCount:
         type: integer
   ErrorModel:
     type: object

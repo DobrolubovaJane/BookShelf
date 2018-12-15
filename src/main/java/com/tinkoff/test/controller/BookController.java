@@ -13,25 +13,13 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-/*@RequestMapping("/api/books")*/
 public class BookController implements io.swagger.api.BooksApi {
     private static final Logger LOG = Logger.getLogger(BookController.class);
     @Autowired
     private BookServiceImpl bookService;
 
-    /*@GetMapping()
-    public List<Book> getAllBooks() {
-        return bookService.getAllBooks();
-    }
-
-    @PostMapping()
-    public Book addBook(@RequestBody Book book) {
-        bookService.addBook(book);
-        return book;
-    }*/
-
     @Override
-    public ResponseEntity<Void> addBook(@Valid io.swagger.model.AddBookRequest request) {
+    public ResponseEntity<io.swagger.model.BookModel> addBook(@Valid io.swagger.model.AddBookRequest request) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
