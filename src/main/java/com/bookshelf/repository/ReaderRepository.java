@@ -1,11 +1,13 @@
-package com.tinkoff.test.repository;
+package com.bookshelf.repository;
 
-import com.tinkoff.test.entity.Reader;
+import com.bookshelf.entity.Reader;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 @Repository
 @Transactional
-public interface ReaderRepository extends JpaRepository<Reader, Integer> {
+public interface ReaderRepository extends JpaRepository<Reader, UUID> {
 }

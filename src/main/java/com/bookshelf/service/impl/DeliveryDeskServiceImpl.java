@@ -1,18 +1,16 @@
-package com.tinkoff.test.service.impl;
+package com.bookshelf.service.impl;
 
-import com.tinkoff.test.entity.Book;
-import com.tinkoff.test.entity.DeliveryDesk;
-import com.tinkoff.test.entity.Reader;
-import com.tinkoff.test.repository.BookRepository;
-import com.tinkoff.test.repository.DeliveryDeskRepository;
-import com.tinkoff.test.repository.ReaderRepository;
-import com.tinkoff.test.service.DeliveryDeskService;
+import com.bookshelf.entity.DeliveryDesk;
+import com.bookshelf.repository.BookRepository;
+import com.bookshelf.repository.DeliveryDeskRepository;
+import com.bookshelf.repository.ReaderRepository;
+import com.bookshelf.service.DeliveryDeskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class DeliveryDeskServiceImpl implements DeliveryDeskService {
@@ -29,10 +27,11 @@ public class DeliveryDeskServiceImpl implements DeliveryDeskService {
     }
 
     @Override
-    public DeliveryDesk startRead(Integer readerId, Integer bookId) {
-        Book book = bookRepository.findById(bookId).get();
-        Reader reader = readerRepository.findById(readerId).get();
-       return deliveryDeskRepository.saveAndFlush(new DeliveryDesk(book, reader, new Date()));
+    public DeliveryDesk startRead(Integer readerId, UUID bookId) {
+//        Book book = bookRepository.findById(bookId).get();
+//        Reader reader = readerRepository.findById(readerId).get();
+//       return deliveryDeskRepository.saveAndFlush(new DeliveryDesk(book, reader, new Date()));
+        return null;
     }
 
     @Override
@@ -42,10 +41,10 @@ public class DeliveryDeskServiceImpl implements DeliveryDeskService {
         return deliveryDeskRepository.saveAndFlush(deliveryDesk);
     }
 
-    @Override
-    public Integer getCountOfReadersByBookId(Book book) {
-        return deliveryDeskRepository.getCountOfReader(book);
-    }
+//    @Override
+//    public Integer getCountOfReadersByBookId(Book book) {
+//        return deliveryDeskRepository.getCountOfReader(book);
+//    }
 
 //    @Override
 //    public Date getAverageTimeByBookId(Integer id) {

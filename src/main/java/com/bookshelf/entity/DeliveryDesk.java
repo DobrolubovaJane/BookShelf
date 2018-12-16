@@ -1,4 +1,4 @@
-package com.tinkoff.test.entity;
+package com.bookshelf.entity;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -18,8 +18,10 @@ public class DeliveryDesk {
     @JoinColumn(name = "reader_id")
     private Reader reader;
 
+    @Temporal(TemporalType.TIMESTAMP)
     private Date startDate;
 
+    @Temporal(TemporalType.TIMESTAMP)
     private Date endDate;
 
     public DeliveryDesk() {

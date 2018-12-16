@@ -85,7 +85,7 @@ paths:
       tags:
       - books
       summary: Update book with id
-      operationId: UpdateBook
+      operationId: updateBook
       consumes:
       - application/json
       produces:
@@ -118,7 +118,7 @@ paths:
       tags:
       - books
       summary: Delete book with id
-      operationId: DeleteBook
+      operationId: deleteBook
       consumes:
       - application/json
       produces:
@@ -131,19 +131,17 @@ paths:
         required: true
       responses:
         200:
-          description: "List of books"
-          schema:
-            $ref: '#/definitions/BookModel'
+          description: "Ok"
         404:
           description: Not Found
           schema:
             $ref: '#/definitions/ErrorModel'
-  '/books/{id}/getBy/{readerId}':
+  '/readers/{id}/getBook':
     post:
       tags:
-      - books
-      summary: Getting book by reader
-      operationId: getBookByReader
+      - readers
+      summary: Taking book
+      operationId: takeBook
       consumes:
       - application/json
       produces:
@@ -154,13 +152,12 @@ paths:
         type: string
         format: uuid
         required: true
-        description: book ID
-      - in: path
-        name: readerId
-        type: string
-        format: uuid
-        required: true
         description: reader ID
+      - in: body
+        schema:
+          $ref: '#/definitions/TakeBookRequest'
+        name: request
+        required: true
       responses:
         200:
           description: Ok
@@ -172,12 +169,12 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/ErrorModel'
-  '/books/{id}/returnBy/{readerId}':
+  '/readers/{id}/returnBook':
     post:
       tags:
-      - books
-      summary: Returning book by reader
-      operationId: returnBookByReader
+      - readers
+      summary: Returning book
+      operationId: returnBook
       consumes:
       - application/json
       produces:
@@ -188,13 +185,12 @@ paths:
         type: string
         format: uuid
         required: true
-        description: book ID
-      - in: path
-        name: readerId
-        type: string
-        format: uuid
-        required: true
         description: reader ID
+      - in: body
+        schema:
+          $ref: '#/definitions/TakeBookRequest'
+        name: request
+        required: true
       responses:
         200:
           description: Ok
@@ -275,6 +271,104 @@ paths:
       responses:
         200:
           description: Ok
+          schema:
+            $ref: '#/definitions/ReaderModel'
+    get:
+      tags:
+      - readers
+      summary: Get readers of the books
+      operationId: getAll
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        200:
+          description: "List of readers"
+          schema:
+            $ref: '#/definitions/ReadersListModel'
+  '/readers/{id}':
+    get:
+      tags:
+      - readers
+      summary: Get reader by id
+      operationId: getById
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: id
+        type: string
+        format: uuid
+        required: true
+      responses:
+        200:
+          description: "Returns reader with specified id"
+          schema:
+            $ref: '#/definitions/ReaderModel'
+        404:
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorModel'
+    put:
+      tags:
+      - readers
+      summary: Update reader with id
+      operationId: updateReader
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: id
+        type: string
+        format: uuid
+        required: true
+      - in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/UpdateReaderRequest'
+      responses:
+        200:
+          description: "Ok"
+          schema:
+            $ref: '#/definitions/ReaderModel'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        404:
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorModel'
+    delete:
+      tags:
+      - readers
+      summary: Delete reader with id
+      operationId: deleteReader
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: id
+        type: string
+        format: uuid
+        required: true
+      responses:
+        200:
+          description: "List of readers"
+          schema:
+            $ref: '#/definitions/ReadersListModel'
+        404:
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorModel'
 definitions:
   AddBookRequest:
     type: object
@@ -288,17 +382,7 @@ definitions:
         type: string
   UpdateBookRequest:
     allOf:
-    - $ref: '#/definitions/AddReaderRequest'
-  AddReaderRequest:
-    type: object
-    required:
-    - name
-    - surname
-    properties:
-      name:
-        type: string
-      surname:
-        type: string
+    - $ref: '#/definitions/AddBookRequest'
   BookModel:
     type: object
     properties:
@@ -334,6 +418,48 @@ definitions:
         type: integer
       minutesCount:
         type: integer
+  AddReaderRequest:
+    type: object
+    required:
+    - name
+    - surname
+    properties:
+      name:
+        type: string
+      surname:
+        type: string
+  UpdateReaderRequest:
+    allOf:
+    - $ref: '#/definitions/AddReaderRequest'
+  ReaderModel:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uuid
+      name:
+        type: string
+      surname:
+        type: string
+  ReadersListModel:
+    type: object
+    properties:
+      items:
+        type: array
+        items:
+          $ref: '#/definitions/ReaderModel'
+      total:
+        type: integer
+  TakeBookRequest:
+    type: object
+    required:
+      - bookId
+    properties:
+      bookId:
+        type: string
+  ReturnBookRequest:
+    allOf:
+      - $ref: '#/definitions/TakeBookRequest'
   ErrorModel:
     type: object
     properties:

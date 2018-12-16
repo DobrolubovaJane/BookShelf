@@ -1,6 +1,5 @@
-package com.tinkoff.test.config;
+package com.bookshelf.config;
 
-import org.springframework.context.annotation.Configuration;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;

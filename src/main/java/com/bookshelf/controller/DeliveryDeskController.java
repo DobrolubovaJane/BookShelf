@@ -1,16 +1,12 @@
-package com.tinkoff.test.controller;
+package com.bookshelf.controller;
 
-import com.tinkoff.test.entity.Book;
-import com.tinkoff.test.entity.DeliveryDesk;
-import com.tinkoff.test.entity.Reader;
-import com.tinkoff.test.service.impl.DeliveryDeskServiceImpl;
-import com.tinkoff.test.service.impl.ReaderServiceImpl;
+import com.bookshelf.entity.DeliveryDesk;
+import com.bookshelf.service.impl.DeliveryDeskServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/delivery")
@@ -24,7 +20,7 @@ public class DeliveryDeskController {
     }
 
     @PostMapping("/startRead")
-    public DeliveryDesk startRead(@RequestBody Integer reader, @RequestBody Integer book) {
+    public DeliveryDesk startRead(@RequestBody Integer reader, @RequestBody UUID book) {
         return deliveryDeskService.startRead(reader, book);
     }
 
@@ -33,10 +29,10 @@ public class DeliveryDeskController {
         return deliveryDeskService.endRead(deliveryDesk);
     }
 
-    @GetMapping("/count")
-    public Integer getCountOfReadersByBookId(@RequestBody Book book) {
-        return deliveryDeskService.getCountOfReadersByBookId(book);
-    }
+//    @GetMapping("/count")
+//    public Integer getCountOfReadersByBookId(@RequestBody Book book) {
+//        return deliveryDeskService.getCountOfReadersByBookId(book);
+//    }
 
 //    @GetMapping()
 //    public Date getAverageTimeByBookId(@RequestBody Integer id) {DeliveryDesk

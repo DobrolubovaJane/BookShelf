@@ -1,13 +1,14 @@
-package com.tinkoff.test.entity;
+package com.bookshelf.entity;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Entity
 @Table (name = "book")
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private UUID id;
     private String name;
     private String author;
 
@@ -19,11 +20,11 @@ public class Book {
         this.author = author;
     }
 
-    public Integer getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
