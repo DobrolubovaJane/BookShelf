@@ -51,11 +51,14 @@ public class ReaderController implements io.swagger.api.ReadersApi {
 
     @Override
     public ResponseEntity<Void> returnBook(UUID id, @Valid TakeBookRequest request) {
-        return null;
+        readerService.returnBook(id, request);
+        return new ResponseEntity<>(HttpStatus.OK);
+
     }
 
     @Override
     public ResponseEntity<Void> takeBook(UUID id, @Valid TakeBookRequest request) {
-        return null;
+        readerService.takeBook(id, request);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -3,12 +3,15 @@ package com.bookshelf.service.impl;
 import com.bookshelf.repository.BookRepository;
 import com.bookshelf.entity.Book;
 import com.bookshelf.mapper.BookMapper;
+import com.bookshelf.repository.DeliveryDeskRepository;
 import com.bookshelf.service.BookService;
 import io.swagger.model.AverageTimeModel;
 import io.swagger.model.BooksPopularityModel;
 import io.swagger.model.BookModel;
 import io.swagger.model.BooksListModel;
 import org.apache.log4j.Logger;
+import io.swagger.model.AddBookRequest;
+import io.swagger.model.UpdateBookRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +24,9 @@ public class BookServiceImpl implements BookService {
     private static final Logger LOG = Logger.getLogger(BookServiceImpl.class);
 
     @Autowired
-    BookRepository bookRepository;
+    private BookRepository bookRepository;
+    @Autowired
+    private DeliveryDeskRepository deliveryDeskRepository;
 
     @Override
     @Transactional
@@ -43,9 +48,8 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public BookModel addBook(io.swagger.model.AddBookRequest request) {
+    public BookModel addBook(AddBookRequest request) {
         Book book = BookMapper.mapAddBookRequestToBook(request);
-        LOG.debug("addBook " + book.toString());
         return BookMapper.mapBookToBookModel(bookRepository.saveAndFlush(book));
     }
 
@@ -58,7 +62,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public BookModel updateBook(UUID id, io.swagger.model.UpdateBookRequest request) {
+    public BookModel updateBook(UUID id, UpdateBookRequest request) {
 
         Book book = BookMapper.mapUpdateBookRequestToBook(bookRepository.findById(id).get(), request);
         return BookMapper.mapBookToBookModel(bookRepository.saveAndFlush(book));
@@ -67,14 +71,18 @@ public class BookServiceImpl implements BookService {
     @Override
     public BooksPopularityModel getPopularity(UUID id) {
         BooksPopularityModel model = new BooksPopularityModel();
-        model.setReadersCount(bookRepository.getCountOfReaders(id));
+        model.setReadersCount(deliveryDeskRepository.getCountOfReaders(id));
         return model;
     }
 
     @Override
     public AverageTimeModel getAverageTimeOfReading(UUID id) {
-        Date date = bookRepository.getAverageTime(id);
+        Date startDate = deliveryDeskRepository.getAverageStartTime(id);
+        Date endDate = deliveryDeskRepository.getAverageEndTime(id);
         AverageTimeModel model = new AverageTimeModel();
-        return null;
+        model.setDaysCount(endDate.getDay() - startDate.getDay());
+        model.setHoursCount(endDate.getHours() - startDate.getHours());
+        model.setMinutesCount(endDate.getMinutes() - startDate.getMinutes());
+        return model;
     }
 }

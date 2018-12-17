@@ -17,10 +17,4 @@ public interface BookRepository extends JpaRepository<Book, UUID>{
     @Query("Select b from Book b where b.name =: name")
     Book findByBookName(@Param("name") String name);
 
-
-    @Query("select count(d.book) from DeliveryDesk d where d.book =: id")
-    Integer getCountOfReaders(@Param("id") UUID id);
-
-    @Query("select avg(to_date(d.start_date,'DD-MON-RR HH:MI:SS AM')) as avg from DeliveryDesk d where d.book =: id ")
-    Date getAverageTime(@Param("id") UUID id);
 }

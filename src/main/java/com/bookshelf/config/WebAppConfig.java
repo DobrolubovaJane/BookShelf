@@ -18,9 +18,9 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableWebMvc
-@EnableJpaRepositories(basePackages = "com.tinkoff.test")
-@ComponentScan(basePackages = {"com.tinkoff.test.controller", "com.tinkoff.test.service",
-"com.tinkoff.test.repository", "com.tinkoff.test.service.impl", "com.tinkoff.test.entity"})
+@EnableJpaRepositories(basePackages = "com.bookshelf")
+@ComponentScan(basePackages = {"com.bookshelf.controller", "com.bookshelf.service",
+"com.bookshelf.repository", "com.bookshelf.service.impl", "com.bookshelf.entity"})
 
 public class WebAppConfig {
 
@@ -42,7 +42,7 @@ public class WebAppConfig {
         LocalContainerEntityManagerFactoryBean bean = new LocalContainerEntityManagerFactoryBean();
         bean.setDataSource(dataSource);
         bean.setJpaVendorAdapter(jpaVendorAdapter);
-        bean.setPackagesToScan("com.tinkoff.test");
+        bean.setPackagesToScan("com.bookshelf");
         return bean;
     }
 
