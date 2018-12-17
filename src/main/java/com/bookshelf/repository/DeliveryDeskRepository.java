@@ -14,15 +14,15 @@ import java.util.UUID;
 @Transactional
 public interface DeliveryDeskRepository extends JpaRepository<DeliveryDesk, Integer> {
 
-    @Query("Select d from DeliveryDesk d where d.reader_id =: reader_id and d.book_id =: book_id")
-    public DeliveryDesk findByReaderAndBookIds(@Param("reader_id") UUID reader_id, @Param("book_id") UUID book_id);
+    @Query("Select d from DeliveryDesk d where d.reader.id =: reader_id and d.book.id =: book_id")
+    public DeliveryDesk findByReaderAndBookIds(UUID reader_id, UUID book_id);
 
-    @Query("select count(d.book) from DeliveryDesk d where d.book =: id")
+    @Query("select count(d.book.id) from DeliveryDesk d where d.book.id =: id")
     Integer getCountOfReaders(@Param("id") UUID id);
 
-    @Query("select avg(d.start_date) as avg from DeliveryDesk d where d.book_id =: book_id ")
+    @Query("select avg(d.startDate) from DeliveryDesk d where d.book.id =: book_id ")
     Date getAverageStartTime(@Param("book_id") UUID book_id);
 
-    @Query("select avg(d.end_time) as avg from DeliveryDesk d where d.book_id =: book_id ")
+    @Query("select avg(d.endDate) from DeliveryDesk d where d.book.id =: book_id ")
     Date getAverageEndTime(@Param("book_id") UUID book_id);
 }

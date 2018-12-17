@@ -13,21 +13,21 @@ import org.springframework.test.context.junit4.SpringRunner;
 /**
  * Unit test for simple App.
  */
-@RunWith(SpringRunner.class)
-@DataJpaTest
-@EnableJpaRepositories(basePackages = "com.tinkoff.test.repository")
-@EntityScan(basePackages = "com.tinkoff.test.entity")
-@ContextConfiguration(classes = BookServiceImpl.class)
+//@RunWith(SpringRunner.class)
+//@DataJpaTest
+//@EnableJpaRepositories(basePackages = "com.bookshelf.repository")
+//@EntityScan(basePackages = "com.bookshelf.entity")
+//@ContextConfiguration(classes = BookServiceImpl.class)
 public class BookTest{
-
-    @Autowired
-    private BookServiceImpl bookService;
-
-    @Test
-    public void addBook() {
-//        Book book = new Book("name1", "author1");
-//        System.out.println(book);
-//       System.out.println("bookService" + bookService);
-//       bookService.addBook(book);
-   }
+//
+//    @Autowired
+//    private BookServiceImpl bookService;
+//
+//    @Test
+//    public void addBook() {
+////        Book book = new Book("name1", "author1");
+////        System.out.println(book);
+////       System.out.println("bookService" + bookService);
+////       bookService.addBook(book);
+//   }
 }

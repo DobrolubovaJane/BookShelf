@@ -1,6 +1,8 @@
 package com.bookshelf.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -11,6 +13,9 @@ public class Book {
     private UUID id;
     private String name;
     private String author;
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)
+    private List<DeliveryDesk> deliveryDesk = new ArrayList<>();
 
     public Book() {
     }
@@ -42,5 +47,13 @@ public class Book {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public List<DeliveryDesk> getDeliveryDesk() {
+        return deliveryDesk;
+    }
+
+    public void setDeliveryDesk(List<DeliveryDesk> deliveryDesk) {
+        this.deliveryDesk = deliveryDesk;
     }
 }

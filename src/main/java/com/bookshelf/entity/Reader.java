@@ -1,6 +1,8 @@
 package com.bookshelf.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -10,6 +12,9 @@ public class Reader {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     private String name;
+
+    @OneToMany(mappedBy = "reader", cascade = CascadeType.REMOVE)
+    private List<DeliveryDesk> deliveryDesk = new ArrayList<>();
 
     public Reader() {
     }
@@ -32,5 +37,13 @@ public class Reader {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<DeliveryDesk> getDeliveryDesk() {
+        return deliveryDesk;
+    }
+
+    public void setDeliveryDesk(List<DeliveryDesk> deliveryDesk) {
+        this.deliveryDesk = deliveryDesk;
     }
 }

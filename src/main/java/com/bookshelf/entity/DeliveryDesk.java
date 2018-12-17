@@ -18,9 +18,11 @@ public class DeliveryDesk {
     @JoinColumn(name = "reader_id")
     private Reader reader;
 
+    @Column(name = "start_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date startDate;
 
+    @Column(name = "end_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date endDate;
 
