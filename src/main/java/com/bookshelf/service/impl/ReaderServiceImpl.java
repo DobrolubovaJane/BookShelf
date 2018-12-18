@@ -1,5 +1,6 @@
 package com.bookshelf.service.impl;
 
+import com.bookshelf.entity.Book;
 import com.bookshelf.entity.DeliveryDesk;
 import com.bookshelf.entity.Reader;
 import com.bookshelf.mapper.ReaderMapper;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -52,20 +54,31 @@ public class ReaderServiceImpl implements ReaderService {
     @Override
     public ReaderModel updateReader(UUID id, UpdateReaderRequest request) {
         Reader reader = readerRepository.findById(id).get();
+        reader.setName(request.getName());
         return ReaderMapper.mapReaderToReaderModel(readerRepository.saveAndFlush(reader));
     }
 
     @Override
-    public void returnBook(UUID id, TakeBookRequest request) {
-        DeliveryDesk deliveryDesk = deliveryDeskRepository.findByReaderAndBookIds(id, UUID.fromString(request.getBookId()));
+    public void returnBook(UUID readerId, TakeBookRequest request) {
+        UUID bookId = UUID.fromString(request.getBookId());
+        DeliveryDesk deliveryDesk = deliveryDeskRepository.findByReaderAndBookIds(readerId, bookId).get();
         deliveryDesk.setEndDate(new Date());
+        Long time = deliveryDesk.getEndDate().getTime() - deliveryDesk.getStartDate().getTime();
+
+        Book book = bookRepository.findById(bookId).get();
+        book.setAllTimeInMinutes(book.getAllTimeInMinutes() + time);
+        bookRepository.saveAndFlush(book);
     }
 
     @Override
-    public void takeBook(UUID id, TakeBookRequest request) {
+    public void takeBook(UUID readerId, TakeBookRequest request) {
         DeliveryDesk deliveryDesk = new DeliveryDesk();
-        deliveryDesk.setReader(readerRepository.findById(id).get());
-        deliveryDesk.setBook(bookRepository.findById(UUID.fromString(request.getBookId())).get());
+        deliveryDesk.setReader(readerRepository.findById(readerId).get());
+        Book book = bookRepository.findById(UUID.fromString(request.getBookId())).get();
+        deliveryDesk.setBook(book);
         deliveryDesk.setStartDate(new Date());
+        deliveryDeskRepository.saveAndFlush(deliveryDesk);
+        book.incCountOfReaders();
+        bookRepository.saveAndFlush(book);
     }
 }

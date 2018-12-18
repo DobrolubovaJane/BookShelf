@@ -1,6 +1,7 @@
 package com.bookshelf.controller;
 
 import com.bookshelf.service.impl.BookServiceImpl;
+import com.bookshelf.service.impl.GetAllBooksFilterModel;
 import io.swagger.model.AverageTimeModel;
 import io.swagger.model.BookModel;
 import io.swagger.model.BooksListModel;
@@ -28,13 +29,10 @@ public class BookController implements io.swagger.api.BooksApi {
     }
 
     @Override
-    public ResponseEntity<BooksListModel> getAll(@Valid String searchQuery) {
-        if (searchQuery.isEmpty()) {
-            return new ResponseEntity<>(bookService.getAllBooks(),HttpStatus.OK);
-        }
-        BooksListModel booksListModel = new BooksListModel();
-        booksListModel.addItemsItem(bookService.getBookByName(searchQuery));
-        return new ResponseEntity<>(booksListModel, HttpStatus.OK);
+    public ResponseEntity<BooksListModel> getAll(@Valid String Name) {
+        GetAllBooksFilterModel filterModel = new GetAllBooksFilterModel();
+        filterModel.setName(Name);
+        return new ResponseEntity<>(bookService.getAllBooks(filterModel),HttpStatus.OK);
     }
 
     @Override

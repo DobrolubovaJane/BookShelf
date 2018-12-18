@@ -24,6 +24,7 @@ public class BookMapper {
         BooksListModel booksListModel = new BooksListModel();
         List<BookModel> bookModels = books.stream().map(book -> {
             BookModel bookModel = new BookModel();
+            bookModel.setId(book.getId());
             bookModel.setName(book.getName());
             bookModel.setAuthor(book.getAuthor());
             return bookModel;
@@ -34,6 +35,7 @@ public class BookMapper {
 
     public static BookModel mapBookToBookModel(Book book) {
         BookModel bookModel = new BookModel();
+        bookModel.setId(book.getId());
         bookModel.setName(book.getName());
         bookModel.setAuthor(book.getAuthor());
         return bookModel;

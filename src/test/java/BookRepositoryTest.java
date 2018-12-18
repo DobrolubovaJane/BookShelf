@@ -14,27 +14,27 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-
-@RunWith(SpringRunner.class)
-@EnableJpaRepositories(basePackages = "com.bookshelf.repository")
-@EntityScan(basePackages = "com.bookshelf.entity")
-@ContextConfiguration(classes = {BookRepository.class})
-@DataJpaTest
+//
+//@RunWith(SpringRunner.class)
+//@EnableJpaRepositories(basePackages = "com.bookshelf.repository")
+//@EntityScan(basePackages = "com.bookshelf.entity")
+//@ContextConfiguration(classes = {BookRepository.class})
+//@DataJpaTest
 public class BookRepositoryTest {
-    @Autowired
-    private TestEntityManager testEntityManager;
+//    @Autowired
+//    private TestEntityManager testEntityManager;
+//
+//    @Autowired
+//    private BookRepository bookRepository;
 
-    @Autowired
-    private BookRepository bookRepository;
-
-    @Test
-    public void firtTest() {
-        Book book = new Book("name1", "author1");
-        testEntityManager.persist(book);
-        testEntityManager.flush();
-        bookRepository.saveAndFlush(book);
-        Book findBook = bookRepository.findByBookName("name1");
-
-        assertThat(findBook.getName(), is(book.getName()));
-    }
+//    @Test
+//    public void firtTest() {
+//        Book book = new Book("name1", "author1");
+//        testEntityManager.persist(book);
+//        testEntityManager.flush();
+//        bookRepository.saveAndFlush(book);
+//        Book findBook = bookRepository.findByBookName("name1");
+//
+//        assertThat(findBook.getName(), is(book.getName()));
+//    }
 }

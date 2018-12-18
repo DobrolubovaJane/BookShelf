@@ -1,5 +1,6 @@
 package com.bookshelf.service;
 
+import com.bookshelf.service.impl.GetAllBooksFilterModel;
 import io.swagger.model.BooksListModel;
 import io.swagger.model.BookModel;
 import io.swagger.model.AddBookRequest;
@@ -12,9 +13,8 @@ import java.util.UUID;
 
 @Service
 public interface BookService {
-    public BooksListModel getAllBooks();
+    public BooksListModel getAllBooks(GetAllBooksFilterModel filter);
     public BookModel getBookById(UUID id);
-    public BookModel getBookByName(String name);
     public BookModel addBook(AddBookRequest request);
     public void deleteBook(UUID id);
     public BookModel updateBook(UUID id, UpdateBookRequest request);

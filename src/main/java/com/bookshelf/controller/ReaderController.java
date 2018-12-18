@@ -15,7 +15,6 @@ import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/readers")
 public class ReaderController implements io.swagger.api.ReadersApi {
     @Autowired
     private ReaderServiceImpl readerService;

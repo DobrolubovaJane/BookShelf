@@ -14,12 +14,13 @@ public class ReaderMapper {
 
     public static Reader mapAddReaderRequestToReader(AddReaderRequest request) {
         Reader reader = new Reader();
-        reader.setName(reader.getName());
+        reader.setName(request.getName());
         return reader;
     }
 
     public static ReaderModel mapReaderToReaderModel(Reader reader) {
         ReaderModel readerModel = new ReaderModel();
+        readerModel.setId(reader.getId());
         readerModel.setName(reader.getName());
         return readerModel;
     }
@@ -28,6 +29,7 @@ public class ReaderMapper {
         ReadersListModel readersListModel = new ReadersListModel();
         List<ReaderModel> bookModels = readers.stream().map(reader -> {
             ReaderModel readerModel = new ReaderModel();
+            readerModel.setId(reader.getId());
             readerModel.setName(reader.getName());
             return readerModel;
         }).collect(Collectors.toList());

@@ -3,6 +3,7 @@ package com.bookshelf.service.impl;
 import com.bookshelf.repository.BookRepository;
 import com.bookshelf.entity.Book;
 import com.bookshelf.mapper.BookMapper;
+import com.bookshelf.repository.BookSpecification;
 import com.bookshelf.repository.DeliveryDeskRepository;
 import com.bookshelf.service.BookService;
 import io.swagger.model.AverageTimeModel;
@@ -30,20 +31,14 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public BooksListModel getAllBooks() {
-        return BookMapper.mapBooksToBooksListModel(bookRepository.findAll());
+    public BooksListModel getAllBooks(GetAllBooksFilterModel filterModel) {
+        return BookMapper.mapBooksToBooksListModel(bookRepository.findAll(new BookSpecification(filterModel.getName())));
     }
 
     @Override
     @Transactional
     public BookModel getBookById(UUID id) {
         return BookMapper.mapBookToBookModel(bookRepository.findById(id).get());
-    }
-
-    @Override
-    @Transactional
-    public BookModel getBookByName(String name) {
-        return BookMapper.mapBookToBookModel(bookRepository.findByBookName(name));
     }
 
     @Override
@@ -63,7 +58,6 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public BookModel updateBook(UUID id, UpdateBookRequest request) {
-
         Book book = BookMapper.mapUpdateBookRequestToBook(bookRepository.findById(id).get(), request);
         return BookMapper.mapBookToBookModel(bookRepository.saveAndFlush(book));
     }
@@ -71,18 +65,19 @@ public class BookServiceImpl implements BookService {
     @Override
     public BooksPopularityModel getPopularity(UUID id) {
         BooksPopularityModel model = new BooksPopularityModel();
-        model.setReadersCount(deliveryDeskRepository.getCountOfReaders(id));
+        Book book = bookRepository.findById(id).get();
+        model.setReadersCount(book.getCountOfReaders());
         return model;
     }
 
     @Override
     public AverageTimeModel getAverageTimeOfReading(UUID id) {
-        Date startDate = deliveryDeskRepository.getAverageStartTime(id);
-        Date endDate = deliveryDeskRepository.getAverageEndTime(id);
+        Book book = bookRepository.findById(id).get();
+        Long averageTime = book.getAverageTime();
         AverageTimeModel model = new AverageTimeModel();
-        model.setDaysCount(endDate.getDay() - startDate.getDay());
-        model.setHoursCount(endDate.getHours() - startDate.getHours());
-        model.setMinutesCount(endDate.getMinutes() - startDate.getMinutes());
+        model.setDaysCount((int) (averageTime / (1000*60*60*24)));
+        model.setHoursCount((int) (averageTime / (1000*60*60)));
+        model.setMinutesCount((int) (averageTime / (1000*60)));
         return model;
     }
 }

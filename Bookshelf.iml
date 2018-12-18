@@ -12,6 +12,8 @@
         <sourceRoots>
           <root url="file://$MODULE_DIR$/src/main/java" />
           <root url="file://$MODULE_DIR$/src/main/resources" />
+          <root url="file://$MODULE_DIR$/target/generated-sources/swagger/src/main/java/api" />
+          <root url="file://$MODULE_DIR$/target/generated-sources/swagger/src/test/java" />
         </sourceRoots>
       </configuration>
     </facet>

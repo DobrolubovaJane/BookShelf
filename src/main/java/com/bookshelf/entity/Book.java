@@ -2,6 +2,7 @@ package com.bookshelf.entity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,6 +14,27 @@ public class Book {
     private UUID id;
     private String name;
     private String author;
+    private Integer countOfReaders = 0;
+    private Long allTimeInMinutes = Long.valueOf(0);
+
+    public Long getAverageTime() {
+        return allTimeInMinutes/countOfReaders;
+    }
+    public Integer getCountOfReaders() {
+        return countOfReaders;
+    }
+
+    public void incCountOfReaders() {
+        this.countOfReaders ++;
+    }
+
+    public Long getAllTimeInMinutes() {
+        return allTimeInMinutes;
+    }
+
+    public void setAllTimeInMinutes(Long allTimeInMinutes) {
+        this.allTimeInMinutes = allTimeInMinutes;
+    }
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)
     private List<DeliveryDesk> deliveryDesk = new ArrayList<>();

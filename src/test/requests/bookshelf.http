@@ -1,0 +1,115 @@
+
+# Get list
+GET http://localhost:8080/books
+Content-Type: application/json
+
+###
+
+# Get list
+GET http://localhost:8080/books?searchQuery=book 1
+Content-Type: application/json
+
+###
+
+# Add book
+POST http://localhost:8080/books
+Content-Type: application/json
+
+{
+  "name": "book 1",
+  "author": "Gogol 1"
+}
+###
+
+# Get book by id
+GET http://localhost:8080/books/533d6d03-e34b-4675-9586-af85d8b55c88
+Content-Type: application/json
+
+###
+
+# Update book
+PUT http://localhost:8080/books/0aeeb161-0494-44da-8547-3c21572d049b
+Content-Type: application/json
+
+{
+  "name": "book 2 update",
+  "author": ""
+}
+###
+
+###
+# Delete book
+DELETE http://localhost:8080/books/e4d287e1-9a1e-4ac9-b537-a53bc845f313
+Content-Type: application/json
+
+###
+
+# Get list of readers
+GET http://localhost:8080/readers
+Content-Type: application/json
+
+###
+# Add reader
+POST http://localhost:8080/readers
+Content-Type: application/json
+
+{
+  "name": "reader 2"
+}
+
+###
+
+# Get reader by id
+GET http://localhost:8080/readers/dd9ffe45-dc1a-4607-8eb4-ce3d8672a2fa
+Content-Type: application/json
+
+###
+
+# Update reader
+PUT http://localhost:8080/readers/cca93c8a-90c4-4ac6-bb67-686590ddd657
+Content-Type: application/json
+
+{
+  "name": "reader 1 update"
+}
+###
+
+###
+# Delete reader
+DELETE http://localhost:8080/readers/a75dcdbe-26bc-4a06-b59d-9e19dc9f62cf
+Content-Type: application/json
+
+###
+
+
+# Start Read
+POST http://localhost:8080/readers/d907e279-0dd8-452f-a6ee-a6c22039a2f5/takeBook
+Content-Type: application/json
+
+{
+  "bookId": "2717dc13-6774-4bb7-aab4-e2050a49a5bc"
+}
+
+###
+
+# Finish Read
+POST http://localhost:8080/readers/d907e279-0dd8-452f-a6ee-a6c22039a2f5/returnBook
+Content-Type: application/json
+
+{
+  "bookId": "2717dc13-6774-4bb7-aab4-e2050a49a5bc"
+}
+
+###
+
+# Popularity
+GET http://localhost:8080/books/2717dc13-6774-4bb7-aab4-e2050a49a5bc/popularity
+Content-Type: application/json
+
+###
+
+# Averagetime
+GET http://localhost:8080/books/73792508-65da-4059-be9c-874008c1955b/averagetime
+Content-Type: application/json
+
+###
