@@ -15,10 +15,10 @@ public class Book {
     private String name;
     private String author;
     private Integer countOfReaders = 0;
-    private Long allTimeInMinutes = Long.valueOf(0);
+    private Long allTime = Long.valueOf(0);
 
     public Long getAverageTime() {
-        return allTimeInMinutes/countOfReaders;
+        return allTime/countOfReaders;
     }
     public Integer getCountOfReaders() {
         return countOfReaders;
@@ -28,12 +28,12 @@ public class Book {
         this.countOfReaders ++;
     }
 
-    public Long getAllTimeInMinutes() {
-        return allTimeInMinutes;
+    public Long getAllTime() {
+        return allTime;
     }
 
-    public void setAllTimeInMinutes(Long allTimeInMinutes) {
-        this.allTimeInMinutes = allTimeInMinutes;
+    public void setAllTime(Long allTimeInMinutes) {
+        this.allTime = allTimeInMinutes;
     }
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)

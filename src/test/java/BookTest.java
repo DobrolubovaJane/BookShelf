@@ -1,33 +1,40 @@
+import com.bookshelf.config.WebAppConfig;
 import com.bookshelf.entity.Book;
-import com.bookshelf.service.impl.BookServiceImpl;
-
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
-/**
- * Unit test for simple App.
- */
-//@RunWith(SpringRunner.class)
-//@DataJpaTest
-//@EnableJpaRepositories(basePackages = "com.bookshelf.repository")
-//@EntityScan(basePackages = "com.bookshelf.entity")
-//@ContextConfiguration(classes = BookServiceImpl.class)
-public class BookTest{
-//
-//    @Autowired
-//    private BookServiceImpl bookService;
-//
-//    @Test
-//    public void addBook() {
-////        Book book = new Book("name1", "author1");
-////        System.out.println(book);
-////       System.out.println("bookService" + bookService);
-////       bookService.addBook(book);
-//   }
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = {WebAppConfig.class })
+@SpringBootTest
+@WebAppConfiguration
+public class BookTest {
+    @Test
+    public void newBook() {
+        Book book = new Book("name for addBook", "author for addBook");
+        Assert.assertNotNull(book);
+    }
+
+    @Test
+    public void incrementCountOfReaders() {
+        Book book = new Book("name", "author");
+        book.incCountOfReaders();
+
+        Assert.assertEquals(1L, book.getCountOfReaders().longValue());
+    }
+
+    @Test
+    public void getAverageTime() {
+        Book book = new Book("name", "author");
+        book.setAllTime(2000L);
+        book.incCountOfReaders();
+        book.incCountOfReaders();
+
+        Assert.assertEquals(1000L, book.getAverageTime().longValue());
+    }
+
 }

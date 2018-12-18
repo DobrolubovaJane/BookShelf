@@ -66,7 +66,7 @@ public class ReaderServiceImpl implements ReaderService {
         Long time = deliveryDesk.getEndDate().getTime() - deliveryDesk.getStartDate().getTime();
 
         Book book = bookRepository.findById(bookId).get();
-        book.setAllTimeInMinutes(book.getAllTimeInMinutes() + time);
+        book.setAllTime(book.getAllTime() + time);
         bookRepository.saveAndFlush(book);
     }
 
