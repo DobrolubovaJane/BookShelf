@@ -1,5 +1,6 @@
 package com.bookshelf.service.impl;
 
+import com.bookshelf.exception.NotFoundException;
 import com.bookshelf.repository.BookRepository;
 import com.bookshelf.entity.Book;
 import com.bookshelf.mapper.BookMapper;
@@ -17,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -38,7 +39,11 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public BookModel getBookById(UUID id) {
-        return BookMapper.mapBookToBookModel(bookRepository.findById(id).get());
+        Optional<Book> book = bookRepository.findById(id);
+        if (!book.isPresent()) {
+            throw new NotFoundException("Please enter a book id!");
+        }
+        return BookMapper.mapBookToBookModel(book.get());
     }
 
     @Override
@@ -51,15 +56,22 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public void deleteBook(UUID id) {
-        Book book = bookRepository.findById(id).get();
-        bookRepository.delete(book);
+        Optional<Book> book = bookRepository.findById(id);
+        if (!book.isPresent()) {
+            throw new NotFoundException("Please enter a book id!");
+        }
+        bookRepository.delete(book.get());
     }
 
     @Override
     @Transactional
     public BookModel updateBook(UUID id, UpdateBookRequest request) {
-        Book book = BookMapper.mapUpdateBookRequestToBook(bookRepository.findById(id).get(), request);
-        return BookMapper.mapBookToBookModel(bookRepository.saveAndFlush(book));
+        Optional<Book> book = bookRepository.findById(id);
+        if (!book.isPresent()) {
+            throw new NotFoundException("Please enter a book id!");
+        }
+        Book bookMapper = BookMapper.mapUpdateBookRequestToBook(book.get(), request);
+        return BookMapper.mapBookToBookModel(bookRepository.saveAndFlush(bookMapper));
     }
 
     @Override

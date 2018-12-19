@@ -13,7 +13,7 @@ import javax.validation.constraints.*;
  * AddReaderRequest
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-12-18T21:15:44.869+03:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-12-20T00:03:59.475+03:00")
 
 public class AddReaderRequest   {
   @JsonProperty("name")
@@ -31,7 +31,7 @@ public class AddReaderRequest   {
   @ApiModelProperty(required = true, value = "")
   @NotNull
 
-
+@Size(min=1) 
   public String getName() {
     return name;
   }

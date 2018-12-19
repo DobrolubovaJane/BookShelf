@@ -1,6 +1,7 @@
 package com.bookshelf.mapper;
 
 import com.bookshelf.entity.Book;
+import com.bookshelf.exception.BadRequestException;
 import io.swagger.model.BookModel;
 import io.swagger.model.BooksListModel;
 import io.swagger.model.UpdateBookRequest;
@@ -13,9 +14,20 @@ public class BookMapper {
     private BookMapper(){}
 
     public  static Book mapAddBookRequestToBook(AddBookRequest request) {
+        String name = request.getName();
+        String author = request.getAuthor();
+
+        if (name == null || name.isEmpty()) {
+            throw new BadRequestException("name is required");
+        }
+
+        if (author == null || author.isEmpty()) {
+            throw new BadRequestException("author is required");
+        }
+
         Book book = new Book();
-        book.setName(request.getName());
-        book.setAuthor(request.getAuthor());
+        book.setName(name);
+        book.setAuthor(author);
         return book;
     }
 
@@ -30,6 +42,7 @@ public class BookMapper {
             return bookModel;
         }).collect(Collectors.toList());
         booksListModel.setItems(bookModels);
+        booksListModel.setTotal(bookModels.size());
         return booksListModel;
     }
 
@@ -42,8 +55,20 @@ public class BookMapper {
     }
 
     public static Book mapUpdateBookRequestToBook(Book book, UpdateBookRequest request) {
-        book.setName(request.getName());
-        book.setAuthor(request.getAuthor());
+
+        String name = request.getName();
+        String author = request.getAuthor();
+
+        if (name == null || name.isEmpty()) {
+            throw new BadRequestException("name is required");
+        }
+
+        if (author == null || author.isEmpty()) {
+            throw new BadRequestException("author is required");
+        }
+
+        book.setName(name);
+        book.setAuthor(author);
         return book;
     }
 }

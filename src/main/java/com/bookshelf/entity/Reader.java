@@ -11,10 +11,9 @@ public class Reader {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    private String name;
 
-    @OneToMany(mappedBy = "reader", cascade = CascadeType.REMOVE)
-    private List<DeliveryDesk> deliveryDesk = new ArrayList<>();
+    @Column(nullable = false)
+    private String name;
 
     public Reader() {
     }
@@ -37,13 +36,5 @@ public class Reader {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<DeliveryDesk> getDeliveryDesk() {
-        return deliveryDesk;
-    }
-
-    public void setDeliveryDesk(List<DeliveryDesk> deliveryDesk) {
-        this.deliveryDesk = deliveryDesk;
     }
 }

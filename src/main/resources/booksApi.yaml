@@ -378,8 +378,10 @@ definitions:
     properties:
       name:
         type: string
+        minLength: 1
       author:
         type: string
+        minLength: 1
   UpdateBookRequest:
     allOf:
     - $ref: '#/definitions/AddBookRequest'
@@ -423,6 +425,7 @@ definitions:
     properties:
       name:
         type: string
+        minLength: 1
   UpdateReaderRequest:
     allOf:
     - $ref: '#/definitions/AddReaderRequest'
@@ -450,6 +453,7 @@ definitions:
     properties:
       bookId:
         type: string
+        minLength: 1
   ReturnBookRequest:
     allOf:
       - $ref: '#/definitions/TakeBookRequest'

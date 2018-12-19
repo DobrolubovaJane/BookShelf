@@ -16,7 +16,7 @@ POST http://localhost:8080/books
 Content-Type: application/json
 
 {
-  "name": "book 1",
+  "name": "",
   "author": "Gogol 1"
 }
 ###

@@ -67,18 +67,28 @@ public class ReaderServiceImpl implements ReaderService {
 
         Book book = bookRepository.findById(bookId).get();
         book.setAllTime(book.getAllTime() + time);
+        book.setCurrentReader(null);
         bookRepository.saveAndFlush(book);
     }
 
     @Override
     public void takeBook(UUID readerId, TakeBookRequest request) {
-        DeliveryDesk deliveryDesk = new DeliveryDesk();
-        deliveryDesk.setReader(readerRepository.findById(readerId).get());
         Book book = bookRepository.findById(UUID.fromString(request.getBookId())).get();
+        if (book.getCurrentReader() != null) {
+            // TODO exception
+            return;
+        }
+        DeliveryDesk deliveryDesk = new DeliveryDesk();
+        Reader reader = readerRepository.findById(readerId).get();
+        // TODO Not found exception
+
+        deliveryDesk.setReader(reader);
         deliveryDesk.setBook(book);
         deliveryDesk.setStartDate(new Date());
         deliveryDeskRepository.saveAndFlush(deliveryDesk);
+
         book.incCountOfReaders();
+        book.setCurrentReader(reader);
         bookRepository.saveAndFlush(book);
     }
 }
