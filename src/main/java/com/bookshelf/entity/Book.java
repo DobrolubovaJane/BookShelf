@@ -71,7 +71,7 @@ public class Book {
         return allTime/countOfReaders;
     }
 
-    public Integer getCountOfReaders() {
+    public int getCountOfReaders() {
         return countOfReaders;
     }
 

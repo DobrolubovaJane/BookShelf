@@ -30,7 +30,7 @@ public class BookTests {
         Book book = fixture.create(Book.class);
         book.incCountOfReaders();
 
-        Assert.assertEquals(1L, book.getCountOfReaders().longValue());
+        Assert.assertEquals(1, book.getCountOfReaders());
     }
 
     @Test

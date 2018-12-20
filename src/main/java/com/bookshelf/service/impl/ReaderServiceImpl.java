@@ -109,6 +109,7 @@ public class ReaderServiceImpl implements ReaderService {
 
         DeliveryDesk deliveryDesk = deliveryDeskOptional.get();
         deliveryDesk.setEndDate(new Date());
+        deliveryDeskRepository.saveAndFlush(deliveryDesk);
         return deliveryDesk.getEndDate().getTime() - deliveryDesk.getStartDate().getTime();
     }
 
