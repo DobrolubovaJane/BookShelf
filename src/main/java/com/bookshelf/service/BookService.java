@@ -1,5 +1,6 @@
 package com.bookshelf.service;
 
+import com.bookshelf.exception.NotFoundException;
 import com.bookshelf.service.impl.GetAllBooksFilterModel;
 import io.swagger.model.BooksListModel;
 import io.swagger.model.BookModel;

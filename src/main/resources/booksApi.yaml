@@ -453,6 +453,7 @@ definitions:
     properties:
       bookId:
         type: string
+        format: uuid
         minLength: 1
   ReturnBookRequest:
     allOf:

@@ -1,6 +1,6 @@
 package com.bookshelf.controller;
 
-import com.bookshelf.service.impl.BookServiceImpl;
+import com.bookshelf.service.BookService;
 import com.bookshelf.service.impl.GetAllBooksFilterModel;
 import io.swagger.model.AverageTimeModel;
 import io.swagger.model.BookModel;
@@ -21,7 +21,7 @@ import java.util.UUID;
 public class BookController implements io.swagger.api.BooksApi {
     private static final Logger LOG = Logger.getLogger(BookController.class);
     @Autowired
-    private BookServiceImpl bookService;
+    private BookService bookService;
 
     @Override
     public ResponseEntity<BookModel> addBook(@Valid AddBookRequest request) {

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.util.UUID;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -13,13 +14,13 @@ import javax.validation.constraints.*;
  * TakeBookRequest
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-12-20T00:03:59.475+03:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-12-20T22:47:53.969+03:00")
 
 public class TakeBookRequest   {
   @JsonProperty("bookId")
-  private String bookId = null;
+  private UUID bookId = null;
 
-  public TakeBookRequest bookId(String bookId) {
+  public TakeBookRequest bookId(UUID bookId) {
     this.bookId = bookId;
     return this;
   }
@@ -31,12 +32,13 @@ public class TakeBookRequest   {
   @ApiModelProperty(required = true, value = "")
   @NotNull
 
-@Size(min=1) 
-  public String getBookId() {
+  @Valid
+
+  public UUID getBookId() {
     return bookId;
   }
 
-  public void setBookId(String bookId) {
+  public void setBookId(UUID bookId) {
     this.bookId = bookId;
   }
 

@@ -20,7 +20,8 @@ import javax.sql.DataSource;
 @EnableWebMvc
 @EnableJpaRepositories(basePackages = "com.bookshelf")
 @ComponentScan(basePackages = {"com.bookshelf.controller", "com.bookshelf.service",
-"com.bookshelf.repository", "com.bookshelf.service.impl", "com.bookshelf.entity", "com.bookshelf.exception"})
+"com.bookshelf.repository", "com.bookshelf.service.impl", "com.bookshelf.entity",
+        "com.bookshelf.exception", "com.bookshelf.date"})
 
 public class WebAppConfig {
 

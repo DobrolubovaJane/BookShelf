@@ -14,6 +14,7 @@ import java.util.UUID;
 @Transactional
 public interface DeliveryDeskRepository extends JpaRepository<DeliveryDesk, Integer> {
 
-    @Query("Select d from DeliveryDesk d where d.reader.id = :reader_id and d.book.id = :book_id")
-    public Optional<DeliveryDesk> findByReaderAndBookIds(@Param("reader_id") UUID readerId, @Param("book_id") UUID bookId);
+    @Query("Select d from DeliveryDesk d where d.reader.id = :reader_id and d.book.id = :book_id and d.endDate = null")
+    public Optional<DeliveryDesk> findNotClosedDelivery(@Param("reader_id") UUID readerId, @Param("book_id") UUID bookId);
 }
+

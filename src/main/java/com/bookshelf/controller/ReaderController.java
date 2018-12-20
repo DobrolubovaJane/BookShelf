@@ -1,6 +1,6 @@
 package com.bookshelf.controller;
 
-import com.bookshelf.service.impl.ReaderServiceImpl;
+import com.bookshelf.service.ReaderService;
 import io.swagger.model.ReaderModel;
 import io.swagger.model.ReadersListModel;
 import io.swagger.model.AddReaderRequest;
@@ -17,7 +17,7 @@ import java.util.UUID;
 @RestController
 public class ReaderController implements io.swagger.api.ReadersApi {
     @Autowired
-    private ReaderServiceImpl readerService;
+    private ReaderService readerService;
 
 
     @Override

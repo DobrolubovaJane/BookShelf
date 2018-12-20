@@ -20,7 +20,7 @@ public class BookSpecification implements Specification<Book> {
     public Predicate toPredicate(Root<Book> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
 
         if (SearchQueryByName != null && !SearchQueryByName.isEmpty()) {
-            return criteriaBuilder.like(criteriaBuilder.lower(root.get("name")), SearchQueryByName.toLowerCase());
+            return criteriaBuilder.like(criteriaBuilder.lower(root.get("name")), "%"+SearchQueryByName.toLowerCase()+"%");
         }
 
         return null;

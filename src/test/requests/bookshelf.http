@@ -16,7 +16,7 @@ POST http://localhost:8080/books
 Content-Type: application/json
 
 {
-  "name": "",
+  "name": "name",
   "author": "Gogol 1"
 }
 ###
@@ -54,7 +54,7 @@ POST http://localhost:8080/readers
 Content-Type: application/json
 
 {
-  "name": "reader 2"
+  "name": "reader 1"
 }
 
 ###
@@ -83,33 +83,33 @@ Content-Type: application/json
 
 
 # Start Read
-POST http://localhost:8080/readers/d907e279-0dd8-452f-a6ee-a6c22039a2f5/takeBook
+POST http://localhost:8080/readers/b198137a-0ce2-4dec-aa32-c4b410531f29/takeBook
 Content-Type: application/json
 
 {
-  "bookId": "2717dc13-6774-4bb7-aab4-e2050a49a5bc"
+  "bookId": "aee376e5-039e-47e7-b187-a68a7eb069e0"
 }
 
 ###
 
 # Finish Read
-POST http://localhost:8080/readers/d907e279-0dd8-452f-a6ee-a6c22039a2f5/returnBook
+POST http://localhost:8080/readers/b198137a-0ce2-4dec-aa32-c4b410531f29/returnBook
 Content-Type: application/json
 
 {
-  "bookId": "2717dc13-6774-4bb7-aab4-e2050a49a5bc"
+  "bookId": "aee376e5-039e-47e7-b187-a68a7eb069e0"
 }
 
 ###
 
 # Popularity
-GET http://localhost:8080/books/2717dc13-6774-4bb7-aab4-e2050a49a5bc/popularity
+GET http://localhost:8080/books/aee376e5-039e-47e7-b187-a68a7eb069e0/popularity
 Content-Type: application/json
 
 ###
 
 # Averagetime
-GET http://localhost:8080/books/73792508-65da-4059-be9c-874008c1955b/averagetime
+GET http://localhost:8080/books/aee376e5-039e-47e7-b187-a68a7eb069e0/averagetime
 Content-Type: application/json
 
 ###

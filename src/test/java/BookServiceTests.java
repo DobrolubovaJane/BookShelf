@@ -9,7 +9,6 @@ import com.flextrade.jfixture.JFixture;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -178,7 +177,7 @@ public class BookServiceTests {
 
         JFixture fixture = new JFixture();
 
-        String expectedBookName = "expectedName";
+        String expectedBookName = "exPectedNameQueryString";
 
         List<Book> expectedList = new ArrayList<Book> ();
         expectedList.add(repository.save(new Book(fixture.create(String.class), fixture.create(String.class))));
@@ -186,7 +185,7 @@ public class BookServiceTests {
         expectedList.add(repository.saveAndFlush(new Book(expectedBookName, fixture.create(String.class))));
 
         GetAllBooksFilterModel filterModel = new GetAllBooksFilterModel();
-        filterModel.setName("expectedName");
+        filterModel.setName("eXpectedName");
         BooksListModel actualList = sut.getAllBooks(filterModel);
 
         Assert.assertNotNull(actualList);

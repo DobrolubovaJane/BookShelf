@@ -1,5 +1,6 @@
 package com.bookshelf.service.impl;
 
+import com.bookshelf.date.DateTime;
 import com.bookshelf.entity.Book;
 import com.bookshelf.entity.DeliveryDesk;
 import com.bookshelf.entity.Reader;
@@ -18,18 +19,30 @@ import io.swagger.model.TakeBookRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class ReaderServiceImpl implements ReaderService {
-    @Autowired
+
     private ReaderRepository readerRepository;
-    @Autowired
+
     private BookRepository bookRepository;
-    @Autowired
+
     private DeliveryDeskRepository deliveryDeskRepository;
+
+    private DateTime dateTime;
+
+    @Autowired
+    public ReaderServiceImpl(ReaderRepository readerRepository,
+                             BookRepository bookRepository,
+                             DeliveryDeskRepository deliveryDeskRepository,
+                             DateTime dateTime) {
+        this.readerRepository = readerRepository;
+        this.bookRepository = bookRepository;
+        this.deliveryDeskRepository = deliveryDeskRepository;
+        this.dateTime = dateTime;
+    }
 
     @Override
     public ReadersListModel getAllReaders() {
@@ -60,7 +73,7 @@ public class ReaderServiceImpl implements ReaderService {
 
     @Override
     public void returnBook(UUID readerId, TakeBookRequest request) {
-        UUID bookId = UUID.fromString(request.getBookId());
+        UUID bookId = request.getBookId();
         Long duration = getDuration(readerId, bookId);
 
         Book book = findBookById(bookId);
@@ -71,7 +84,7 @@ public class ReaderServiceImpl implements ReaderService {
 
     @Override
     public void takeBook(UUID readerId, TakeBookRequest request) {
-        UUID bookId = UUID.fromString(request.getBookId());
+        UUID bookId = request.getBookId();
         Book book = findBookById(bookId);
         if (book.getCurrentReader() != null) {
             throw new BadRequestException("Current book is already being read!");
@@ -102,13 +115,13 @@ public class ReaderServiceImpl implements ReaderService {
     }
 
     private Long getDuration(UUID readerId, UUID bookId) {
-        Optional<DeliveryDesk> deliveryDeskOptional = deliveryDeskRepository.findByReaderAndBookIds(readerId, bookId);
+        Optional<DeliveryDesk> deliveryDeskOptional = deliveryDeskRepository.findNotClosedDelivery(readerId, bookId);
         if (!deliveryDeskOptional.isPresent()) {
             throw new NotFoundException("Please enter correct reader id and book id!");
         }
 
         DeliveryDesk deliveryDesk = deliveryDeskOptional.get();
-        deliveryDesk.setEndDate(new Date());
+        deliveryDesk.setEndDate(dateTime.now());
         deliveryDeskRepository.saveAndFlush(deliveryDesk);
         return deliveryDesk.getEndDate().getTime() - deliveryDesk.getStartDate().getTime();
     }
@@ -117,7 +130,7 @@ public class ReaderServiceImpl implements ReaderService {
         DeliveryDesk deliveryDesk = new DeliveryDesk();
         deliveryDesk.setReader(reader);
         deliveryDesk.setBook(book);
-        deliveryDesk.setStartDate(new Date());
+        deliveryDesk.setStartDate(dateTime.now());
         deliveryDeskRepository.saveAndFlush(deliveryDesk);
     }
 }
