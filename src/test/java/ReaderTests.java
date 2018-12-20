@@ -1,5 +1,8 @@
 import com.bookshelf.config.WebAppConfig;
 import com.bookshelf.entity.Reader;
+import com.flextrade.jfixture.JFixture;
+import com.sun.org.apache.regexp.internal.RE;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,13 +15,13 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @ContextConfiguration(classes = {WebAppConfig.class })
 @SpringBootTest
 @WebAppConfiguration
-public class ReaderTest {
+public class ReaderTests {
     @Test
-    public void newReader() {
-        Reader reader = new Reader("Name");
+    public void can_add_new_reader() {
+        JFixture fixture = new JFixture();
 
+        Reader reader = fixture.create(Reader.class);
         Assert.assertNotNull(reader);
     }
-
 
 }

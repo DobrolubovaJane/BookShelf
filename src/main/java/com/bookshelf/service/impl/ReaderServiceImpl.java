@@ -3,6 +3,8 @@ package com.bookshelf.service.impl;
 import com.bookshelf.entity.Book;
 import com.bookshelf.entity.DeliveryDesk;
 import com.bookshelf.entity.Reader;
+import com.bookshelf.exception.BadRequestException;
+import com.bookshelf.exception.NotFoundException;
 import com.bookshelf.mapper.ReaderMapper;
 import com.bookshelf.repository.BookRepository;
 import com.bookshelf.repository.DeliveryDeskRepository;
@@ -36,7 +38,7 @@ public class ReaderServiceImpl implements ReaderService {
 
     @Override
     public ReaderModel getReaderById(UUID id) {
-        return ReaderMapper.mapReaderToReaderModel(readerRepository.findById(id).get());
+        return ReaderMapper.mapReaderToReaderModel(findReaderById(id));
     }
 
     @Override
@@ -47,48 +49,74 @@ public class ReaderServiceImpl implements ReaderService {
 
     @Override
     public void deleteReader(UUID id) {
-        Reader reader = readerRepository.findById(id).get();
-        readerRepository.delete(reader);
+        readerRepository.delete(findReaderById(id));
     }
 
     @Override
     public ReaderModel updateReader(UUID id, UpdateReaderRequest request) {
-        Reader reader = readerRepository.findById(id).get();
-        reader.setName(request.getName());
+        Reader reader = ReaderMapper.mapUpdateReaderRequestToReader(findReaderById(id), request);
         return ReaderMapper.mapReaderToReaderModel(readerRepository.saveAndFlush(reader));
     }
 
     @Override
     public void returnBook(UUID readerId, TakeBookRequest request) {
         UUID bookId = UUID.fromString(request.getBookId());
-        DeliveryDesk deliveryDesk = deliveryDeskRepository.findByReaderAndBookIds(readerId, bookId).get();
-        deliveryDesk.setEndDate(new Date());
-        Long time = deliveryDesk.getEndDate().getTime() - deliveryDesk.getStartDate().getTime();
+        Long duration = getDuration(readerId, bookId);
 
-        Book book = bookRepository.findById(bookId).get();
-        book.setAllTime(book.getAllTime() + time);
+        Book book = findBookById(bookId);
+        book.setAllTime(book.getAllTime() + duration);
         book.setCurrentReader(null);
         bookRepository.saveAndFlush(book);
     }
 
     @Override
     public void takeBook(UUID readerId, TakeBookRequest request) {
-        Book book = bookRepository.findById(UUID.fromString(request.getBookId())).get();
+        UUID bookId = UUID.fromString(request.getBookId());
+        Book book = findBookById(bookId);
         if (book.getCurrentReader() != null) {
-            // TODO exception
-            return;
+            throw new BadRequestException("Current book is already being read!");
         }
-        DeliveryDesk deliveryDesk = new DeliveryDesk();
-        Reader reader = readerRepository.findById(readerId).get();
-        // TODO Not found exception
 
-        deliveryDesk.setReader(reader);
-        deliveryDesk.setBook(book);
-        deliveryDesk.setStartDate(new Date());
-        deliveryDeskRepository.saveAndFlush(deliveryDesk);
+        Reader reader = findReaderById(readerId);
+        createDeliveryDesk(book, reader);
 
         book.incCountOfReaders();
         book.setCurrentReader(reader);
         bookRepository.saveAndFlush(book);
+    }
+
+    private Reader findReaderById(UUID id) {
+        Optional<Reader> reader = readerRepository.findById(id);
+        if (!reader.isPresent()) {
+            throw new NotFoundException("Please enter correct reader id!");
+        }
+        return reader.get();
+    }
+
+    private Book findBookById(UUID id) {
+        Optional<Book> book = bookRepository.findById(id);
+        if (!book.isPresent()) {
+            throw new NotFoundException("Please enter correct book id!");
+        }
+        return book.get();
+    }
+
+    private Long getDuration(UUID readerId, UUID bookId) {
+        Optional<DeliveryDesk> deliveryDeskOptional = deliveryDeskRepository.findByReaderAndBookIds(readerId, bookId);
+        if (!deliveryDeskOptional.isPresent()) {
+            throw new NotFoundException("Please enter correct reader id and book id!");
+        }
+
+        DeliveryDesk deliveryDesk = deliveryDeskOptional.get();
+        deliveryDesk.setEndDate(new Date());
+        return deliveryDesk.getEndDate().getTime() - deliveryDesk.getStartDate().getTime();
+    }
+
+    private void createDeliveryDesk(Book book, Reader reader) {
+        DeliveryDesk deliveryDesk = new DeliveryDesk();
+        deliveryDesk.setReader(reader);
+        deliveryDesk.setBook(book);
+        deliveryDesk.setStartDate(new Date());
+        deliveryDeskRepository.saveAndFlush(deliveryDesk);
     }
 }

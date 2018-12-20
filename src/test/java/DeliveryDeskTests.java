@@ -2,6 +2,7 @@ import com.bookshelf.config.WebAppConfig;
 import com.bookshelf.entity.Book;
 import com.bookshelf.entity.DeliveryDesk;
 import com.bookshelf.entity.Reader;
+import com.flextrade.jfixture.JFixture;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,11 +15,12 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @ContextConfiguration(classes = {WebAppConfig.class })
 @SpringBootTest
 @WebAppConfiguration
-public class DeliveryDeskTest {
+public class DeliveryDeskTests {
     @Test
-    public void newDeliveryDesk() {
-        DeliveryDesk deliveryDesk = new DeliveryDesk();
+    public void can_add_new_delivery_desk() {
+        JFixture fixture = new JFixture();
 
+        DeliveryDesk deliveryDesk = fixture.create(DeliveryDesk.class);
         Assert.assertNotNull(deliveryDesk);
     }
 }

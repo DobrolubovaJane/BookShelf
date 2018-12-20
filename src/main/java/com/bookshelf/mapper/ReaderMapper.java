@@ -1,9 +1,11 @@
 package com.bookshelf.mapper;
+import com.bookshelf.exception.BadRequestException;
 import io.swagger.model.ReadersListModel;
 
 import com.bookshelf.entity.Reader;
 import io.swagger.model.ReaderModel;
 import io.swagger.model.AddReaderRequest;
+import io.swagger.model.UpdateReaderRequest;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,8 +15,14 @@ public class ReaderMapper {
 
 
     public static Reader mapAddReaderRequestToReader(AddReaderRequest request) {
+        String name = request.getName();
+
+        if (name == null || name.isEmpty()) {
+            throw new BadRequestException("name is required");
+        }
+
         Reader reader = new Reader();
-        reader.setName(request.getName());
+        reader.setName(name);
         return reader;
     }
 
@@ -33,7 +41,19 @@ public class ReaderMapper {
             readerModel.setName(reader.getName());
             return readerModel;
         }).collect(Collectors.toList());
+        readersListModel.setTotal(bookModels.size());
         readersListModel.setItems(bookModels);
         return readersListModel;
+    }
+
+    public static Reader mapUpdateReaderRequestToReader(Reader reader, UpdateReaderRequest request) {
+        String name = request.getName();
+
+        if (name == null || name.isEmpty()) {
+            throw new BadRequestException("name is required");
+        }
+
+        reader.setName(name);
+        return reader;
     }
 }

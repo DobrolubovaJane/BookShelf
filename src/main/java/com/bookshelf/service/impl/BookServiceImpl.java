@@ -27,8 +27,6 @@ public class BookServiceImpl implements BookService {
 
     @Autowired
     private BookRepository bookRepository;
-    @Autowired
-    private DeliveryDeskRepository deliveryDeskRepository;
 
     @Override
     @Transactional
@@ -39,11 +37,7 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public BookModel getBookById(UUID id) {
-        Optional<Book> book = bookRepository.findById(id);
-        if (!book.isPresent()) {
-            throw new NotFoundException("Please enter a book id!");
-        }
-        return BookMapper.mapBookToBookModel(book.get());
+        return BookMapper.mapBookToBookModel(findById(id));
     }
 
     @Override
@@ -56,40 +50,40 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public void deleteBook(UUID id) {
-        Optional<Book> book = bookRepository.findById(id);
-        if (!book.isPresent()) {
-            throw new NotFoundException("Please enter a book id!");
-        }
-        bookRepository.delete(book.get());
+        bookRepository.delete(findById(id));
     }
 
     @Override
     @Transactional
     public BookModel updateBook(UUID id, UpdateBookRequest request) {
-        Optional<Book> book = bookRepository.findById(id);
-        if (!book.isPresent()) {
-            throw new NotFoundException("Please enter a book id!");
-        }
-        Book bookMapper = BookMapper.mapUpdateBookRequestToBook(book.get(), request);
+        Book bookMapper = BookMapper.mapUpdateBookRequestToBook(findById(id), request);
         return BookMapper.mapBookToBookModel(bookRepository.saveAndFlush(bookMapper));
     }
 
     @Override
     public BooksPopularityModel getPopularity(UUID id) {
+        Book book = findById(id);
         BooksPopularityModel model = new BooksPopularityModel();
-        Book book = bookRepository.findById(id).get();
         model.setReadersCount(book.getCountOfReaders());
         return model;
     }
 
     @Override
     public AverageTimeModel getAverageTimeOfReading(UUID id) {
-        Book book = bookRepository.findById(id).get();
+        Book book = findById(id);
         Long averageTime = book.getAverageTime();
         AverageTimeModel model = new AverageTimeModel();
         model.setDaysCount((int) (averageTime / (1000*60*60*24)));
         model.setHoursCount((int) (averageTime / (1000*60*60)));
         model.setMinutesCount((int) (averageTime / (1000*60)));
         return model;
+    }
+
+    private Book findById(UUID id) {
+        Optional<Book> book = bookRepository.findById(id);
+        if (!book.isPresent()) {
+            throw new NotFoundException("Please enter correct book id!");
+        }
+        return book.get();
     }
 }

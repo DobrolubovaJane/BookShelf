@@ -83,7 +83,7 @@ public class BookServiceTests {
     public void can_update_book() {
         JFixture fixture = new JFixture();
 
-        Book existing = repository.save(new Book(fixture.create(String.class), fixture.create(String.class)));
+        Book existing = repository.saveAndFlush(new Book(fixture.create(String.class), fixture.create(String.class)));
 
         UpdateBookRequest request = fixture.create(UpdateBookRequest.class);
 
@@ -115,7 +115,7 @@ public class BookServiceTests {
     public void throw_when_try_update_book_without_name() {
         JFixture fixture = new JFixture();
 
-        Book existing = repository.save(new Book(fixture.create(String.class), fixture.create(String.class)));
+        Book existing = repository.saveAndFlush(new Book(fixture.create(String.class), fixture.create(String.class)));
 
         UpdateBookRequest request = fixture.create(UpdateBookRequest.class);
 
@@ -128,7 +128,7 @@ public class BookServiceTests {
     public void throw_when_try_update_book_without_author() {
         JFixture fixture = new JFixture();
 
-        Book existing = repository.save(new Book(fixture.create(String.class), fixture.create(String.class)));
+        Book existing = repository.saveAndFlush(new Book(fixture.create(String.class), fixture.create(String.class)));
 
         UpdateBookRequest request = fixture.create(UpdateBookRequest.class);
 
@@ -141,7 +141,7 @@ public class BookServiceTests {
     public void can_get_book_by_id() {
         JFixture fixture = new JFixture();
 
-        Book expected = repository.save(new Book(fixture.create(String.class), fixture.create(String.class)));
+        Book expected = repository.saveAndFlush(new Book(fixture.create(String.class), fixture.create(String.class)));
 
         BookModel actual = sut.getBookById(expected.getId());
 
@@ -163,7 +163,7 @@ public class BookServiceTests {
         List<Book> expectedList = new ArrayList<Book> ();
         expectedList.add(repository.save(new Book(fixture.create(String.class), fixture.create(String.class))));
         expectedList.add(repository.save(new Book(fixture.create(String.class), fixture.create(String.class))));
-        expectedList.add(repository.save(new Book(fixture.create(String.class), fixture.create(String.class))));
+        expectedList.add(repository.saveAndFlush(new Book(fixture.create(String.class), fixture.create(String.class))));
 
         BooksListModel actualList = sut.getAllBooks(new GetAllBooksFilterModel());
 
@@ -178,16 +178,16 @@ public class BookServiceTests {
 
         JFixture fixture = new JFixture();
 
-        String expectedBookName = "expectedNameWithSearchQuery";
+        String expectedBookName = "expectedName";
 
         List<Book> expectedList = new ArrayList<Book> ();
         expectedList.add(repository.save(new Book(fixture.create(String.class), fixture.create(String.class))));
         expectedList.add(repository.save(new Book(fixture.create(String.class), fixture.create(String.class))));
-        expectedList.add(repository.save(new Book(expectedBookName, fixture.create(String.class))));
+        expectedList.add(repository.saveAndFlush(new Book(expectedBookName, fixture.create(String.class))));
 
         GetAllBooksFilterModel filterModel = new GetAllBooksFilterModel();
-        filterModel.setName("sEaRchQueRy");
-        BooksListModel actualList = sut.getAllBooks(new GetAllBooksFilterModel());
+        filterModel.setName("expectedName");
+        BooksListModel actualList = sut.getAllBooks(filterModel);
 
         Assert.assertNotNull(actualList);
         Assert.assertEquals((Integer)1, actualList.getTotal());
@@ -195,9 +195,39 @@ public class BookServiceTests {
         Assert.assertEquals(expectedBookName, actualList.getItems().get(0).getName());
     }
 
-    // TODO return_empty_list_when_books_not_found_by_searchQuery
-    // TODO can_delete_book
-    // TODO throws_when_try_delete_not_existing_book
+    @Test
+    public void return_empty_list_when_books_not_found_by_searchQuery() {
+        JFixture fixture = new JFixture();
+
+        String expectedBookName = "expectedName";
+
+        List<Book> expectedList = new ArrayList<Book> ();
+        expectedList.add(repository.save(new Book(expectedBookName, fixture.create(String.class))));
+        expectedList.add(repository.save(new Book(expectedBookName, fixture.create(String.class))));
+        expectedList.add(repository.saveAndFlush(new Book(expectedBookName, fixture.create(String.class))));
+
+        GetAllBooksFilterModel filterModel = new GetAllBooksFilterModel();
+        filterModel.setName("notExpectedName");
+        BooksListModel actualList = sut.getAllBooks(filterModel);
+
+        Assert.assertEquals((Integer)0, actualList.getTotal());
+        Assert.assertEquals(0, actualList.getItems().size());
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void can_delete_book_by_id() {
+        JFixture fixture = new JFixture();
+
+        Book expected = repository.saveAndFlush(new Book(fixture.create(String.class), fixture.create(String.class)));
+
+        sut.deleteBook(expected.getId());
+        sut.getBookById(expected.getId());
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void throw_when_try_delete_not_existing_book() {
+        sut.deleteBook(UUID.randomUUID());
+    }
 
     @After
     public void tearDown() throws Exception {
